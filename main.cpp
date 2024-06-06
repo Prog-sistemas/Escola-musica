@@ -127,10 +127,10 @@ void carregarDados(
         if (file) {
             fscanf(file, "%d\n", &alunos[*contador_estudante].id);
             fgets(alunos[*contador_estudante].nome, MAX_NOME, file);
-            alunos[*contador_estudante].nome[strcspn(alunos[*contador_estudante].nome, "\n")] = 0;  // remove newline
+            alunos[*contador_estudante].nome[strcspn(alunos[*contador_estudante].nome, "\n")] = 0; 
             fscanf(file, "%d\n", &alunos[*contador_estudante].idade);
             fgets(alunos[*contador_estudante].instrumento_musical, MAX_NOME, file);
-            alunos[*contador_estudante].instrumento_musical[strcspn(alunos[*contador_estudante].instrumento_musical, "\n")] = 0;  // remove newline
+            alunos[*contador_estudante].instrumento_musical[strcspn(alunos[*contador_estudante].instrumento_musical, "\n")] = 0; 
             fscanf(file, "%d\n", &alunos[*contador_estudante].contador_aulas);
             fclose(file);
             (*contador_estudante)++;
@@ -143,11 +143,11 @@ void carregarDados(
         if (file) {
             fscanf(file, "%d\n", &professores[*contador_professor].id);
             fgets(professores[*contador_professor].nome, MAX_NOME, file);
-            professores[*contador_professor].nome[strcspn(professores[*contador_professor].nome, "\n")] = 0;  // remove newline
+            professores[*contador_professor].nome[strcspn(professores[*contador_professor].nome, "\n")] = 0;  
             fgets(professores[*contador_professor].instrumento_musical, MAX_NOME, file);
-            professores[*contador_professor].instrumento_musical[strcspn(professores[*contador_professor].instrumento_musical, "\n")] = 0;  // remove newline
+            professores[*contador_professor].instrumento_musical[strcspn(professores[*contador_professor].instrumento_musical, "\n")] = 0;  
             fgets(professores[*contador_professor].horario, MAX_HORARIO, file);
-            professores[*contador_professor].horario[strcspn(professores[*contador_professor].horario, "\n")] = 0;  // remove newline
+            professores[*contador_professor].horario[strcspn(professores[*contador_professor].horario, "\n")] = 0;  
             fscanf(file, "%d\n", &professores[*contador_professor].contador_aulas);
             fclose(file);
             (*contador_professor)++;
@@ -160,13 +160,14 @@ void carregarDados(
         if (file) {
             fscanf(file, "%d\n", &aulas[*contador_aulas].id);
             fgets(aulas[*contador_aulas].nome, sizeof(aulas[*contador_aulas].nome), file);
+            aulas[*contador_aulas].nome[strcspn(aulas[*contador_aulas].nome, "\n")] = 0; 
             fscanf(file, "%d\n", &aulas[*contador_aulas].Professor_id);
             aulas[*contador_aulas].contador_alunos = 0;
             while (fscanf(file, "%d\n", &aulas[*contador_aulas].id_aluno[aulas[*contador_aulas].contador_alunos]) == 1) {
                 aulas[*contador_aulas].contador_alunos++;
             }
             fgets(aulas[*contador_aulas].horario, MAX_HORARIO, file);
-            aulas[*contador_aulas].horario[strcspn(aulas[*contador_aulas].horario, "\n")] = 0;  // remove newline
+            aulas[*contador_aulas].horario[strcspn(aulas[*contador_aulas].horario, "\n")] = 0;  
             fclose(file);
             (*contador_aulas)++;
         }
@@ -185,10 +186,10 @@ void menuAlunos(Aluno *alunos, int *contador_estudante, Aula *aulas, int contado
         printf("6. Listar Aulas Do Aluno\n");
         printf("7. Voltar ao Menu Principal\n");
         printf("Escolha uma opção: ");
-        // Lendo a escolha do usuário
+        
         if (scanf("%d", &escolha) != 1) {
             printf("Erro ao ler a escolha. Por favor, insira um número válido.\n");
-            // Limpar o buffer de entrada
+
             while (getchar() != '\n');
             continue; 
         }
