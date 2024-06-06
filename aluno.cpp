@@ -48,7 +48,7 @@ void addAluno(Aluno *alunos, int *contador_estudante) {
     printf("Insira o nome do aluno: ");
     scanf(" %[^\n]", alunos[*contador_estudante].nome);
 
-    // Adicionando validação para a idade
+   
     int idadeValida = 0;
     while (!idadeValida) {
         printf("Insira a idade do aluno: ");
@@ -91,7 +91,7 @@ void editarAluno(Aluno *alunos, int contador_estudante) {
             printf("Editar nome (atual: %s): ", alunos[i].nome);
             scanf(" %[^\n]", alunos[i].nome);
 
-            // Adicionando validação para a idade
+            
             int idadeValida = 0;
             while (!idadeValida) {
                 printf("Editar idade (atual: %d): ", alunos[i].idade);

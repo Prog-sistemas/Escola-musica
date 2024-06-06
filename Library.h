@@ -24,7 +24,7 @@ typedef struct {
 
 typedef struct {
     int id;
-    char nome[MAX_NOME]; // Nome da aula
+    char nome[MAX_NOME]; 
     char horario[MAX_HORARIO];
     int Professor_id;
     int id_aluno[MAX_ALUNOS];
