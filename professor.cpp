@@ -2,13 +2,51 @@
 #include "library.h"
 
 #define MAX_PROFESSORES 100
+#define DADOS_PROFESSORES "dados/professores/professor_%03d.txt"
+
+
+int genIdProfessor(Professor *professores, int contador_professor) {
+    int max = -1;
+
+    for (int i = 0; i < contador_professor; ++i) {
+        if (professores[i].id > max) {
+            max = professores[i].id;
+        }
+    }
+
+    return max + 1;
+}
+
+
+
+void excluiArquivosProfessorInexistentes(Professor *professores, int contador_professor) {
+    char filename[MAX_NOME];
+
+    for (int id = 1; id <= MAX_PROFESSORES; id++) {
+        if (!professorExisteEm(professores, contador_professor, id)) {
+            sprintf(filename, DADOS_PROFESSORES, id);
+            remove(filename);
+        }
+    }
+}
+
+int professorExisteEm(Professor *professores, int contador_professor, int id) {
+    for (int i = 0; i < contador_professor; ++i) {
+        if (professores[i].id == id) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 
 void addProfessor(Professor *professores, int *contador_professor) {
     if (*contador_professor >= MAX_PROFESSORES) {
         printf("Número máximo de professores alcançado.\n");
         return;
     }
-    professores[*contador_professor].id = *contador_professor + 1; 
+    professores[*contador_professor].id = genIdProfessor(professores, *contador_professor); 
     printf("Insira o nome do professor: ");
     scanf(" %[^\n]", professores[*contador_professor].nome);
     printf("Insira o instrumento musical do professor: ");

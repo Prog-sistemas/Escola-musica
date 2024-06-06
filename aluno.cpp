@@ -2,13 +2,49 @@
 #include "library.h"
 
 #define MAX_ALUNOS 100
+#define DADOS_ALUNOS "dados/alunos/aluno_%03d.txt"
+
+int genIdAluno(Aluno *alunos, int contador_estudante) {
+    int max = -1;
+
+    for (int i = 0; i < contador_estudante; ++i) {
+        if (alunos[i].id > max) {
+            max = alunos[i].id;
+        }
+    }
+
+    return max + 1;
+}
+
+void excluiArquivosAlunosInexistentes(Aluno *alunos, int contador_estudante) {
+    char filename[MAX_NOME];
+
+    for (int id = 1; id <= MAX_ALUNOS; id++) {
+        if (!alunoExisteEm(alunos, contador_estudante, id)) {
+            sprintf(filename, DADOS_ALUNOS, id);
+            remove(filename);
+        }
+    }
+}
+
+int alunoExisteEm(Aluno *alunos, int contador_estudante, int id) {
+    for (int i = 0; i < contador_estudante; ++i) {
+        if (alunos[i].id == id) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
 
 void addAluno(Aluno *alunos, int *contador_estudante) {
     if (*contador_estudante >= MAX_ALUNOS) {
         printf("Número máximo de alunos alcançado.\n");
         return;
     }
-    alunos[*contador_estudante].id = *contador_estudante + 1; 
+
+    alunos[*contador_estudante].id = genIdAluno(alunos, *contador_estudante); 
+    
     printf("Insira o nome do aluno: ");
     scanf(" %[^\n]", alunos[*contador_estudante].nome);
 
@@ -75,9 +111,6 @@ void editarAluno(Aluno *alunos, int contador_estudante) {
     printf("Aluno não encontrado.\n");
 }
 
-
-
-
 void excluirAluno(Aluno *alunos, int *contador_estudante, Aula *aulas, int contador_aulas) {
     for (int i = 0; i < *contador_estudante; i++) {
         printf("-------------------------------\n");
@@ -92,6 +125,11 @@ void excluirAluno(Aluno *alunos, int *contador_estudante, Aula *aulas, int conta
     scanf("%d", &id);
     for (int i = 0; i < *contador_estudante; i++) {
         if (alunos[i].id == id) {
+            for (int j = i; j < *contador_estudante - 1; j++) {
+                alunos[j] = alunos[j + 1];
+            }
+            (*contador_estudante)--;
+
             for (int j = 0; j < contador_aulas; j++) {
                 for (int k = 0; k < aulas[j].contador_alunos; k++) {
                     if (aulas[j].id_aluno[k] == id) {
@@ -102,10 +140,14 @@ void excluirAluno(Aluno *alunos, int *contador_estudante, Aula *aulas, int conta
                     }
                 }
             }
-            for (int j = i; j < *contador_estudante - 1; j++) {
-                alunos[j] = alunos[j + 1];
+
+            for (int j = 0; j < contador_aulas; j++) {
+                for (int k = 0; k < aulas[j].contador_alunos; k++) {
+                    if (aulas[j].id_aluno[k] > id) {
+                        aulas[j].id_aluno[k]--;
+                    }
+                }
             }
-            (*contador_estudante)--;
             return;
         }
     }

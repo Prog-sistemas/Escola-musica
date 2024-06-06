@@ -18,9 +18,9 @@
 #define MAX_PROFESSORES 100
 #define MAX_ALUNOS 100
 
-#define DADOS_ALUNOS "dados/alunos/aluno_%d.txt"
-#define DADOS_AULAS "dados/aulas/aula_%d.txt"
-#define DADOS_PROFESSORES "dados/professores/professor_%d.txt"
+#define DADOS_ALUNOS "dados/alunos/aluno_%03d.txt"
+#define DADOS_AULAS "dados/aulas/aula_%03d.txt"
+#define DADOS_PROFESSORES "dados/professores/professor_%03d.txt"
 
 
 void criarPastas() {
@@ -75,6 +75,8 @@ void salvarDados(
         }
     }
 
+    excluiArquivosAlunosInexistentes(alunos, contador_estudante);
+
     for (int i = 0; i < contador_professor; i++) {
         char filename[MAX_NOME];
         sprintf(filename, DADOS_PROFESSORES, professores[i].id);
@@ -86,6 +88,8 @@ void salvarDados(
             printf("Erro ao salvar professor %d\n", professores[i].id);
         }
     }
+
+    excluiArquivosProfessorInexistentes(professores, contador_professor);
 
     for (int i = 0; i < contador_aulas; i++) {
         char filename[MAX_NOME];
@@ -103,6 +107,9 @@ void salvarDados(
             printf("Erro ao salvar aula %d\n", aulas[i].id);
         }
     }
+
+    excluiArquivosAulasInexistentes(aulas, contador_aulas);
+
 }
 
 void carregarDados(

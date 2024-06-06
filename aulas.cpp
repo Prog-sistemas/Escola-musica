@@ -3,6 +3,42 @@
 #include "library.h"
 
 #define MAX_AULAS 100
+#define DADOS_AULAS "dados/aulas/aula_%03d.txt"
+
+
+int genIdAula(Aula *aulas, int contador_aulas) {
+    int max = -1;
+
+    for (int i = 0; i < contador_aulas; ++i) {
+        if (aulas[i].id > max) {
+            max = aulas[i].id;
+        }
+    }
+
+    return max + 1;
+}
+
+
+void excluiArquivosAulasInexistentes(Aula *aulas, int contador_aulas) {
+    char filename[MAX_NOME];
+
+    for (int id = 1; id <= MAX_AULAS; id++) {
+        if (!aulaExisteEm(aulas, contador_aulas, id)) {
+            sprintf(filename, DADOS_AULAS, id);
+            remove(filename);
+        }
+    }
+}
+
+int aulaExisteEm(Aula *aulas, int contador_aulas, int id) {
+    for (int i = 0; i < contador_aulas; ++i) {
+        if (aulas[i].id == id) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
 
 void addAula(Aula *aulas, int *contador_aulas, Professor *professores, int contador_professor) {
     if (*contador_aulas >= MAX_AULAS) {
@@ -10,7 +46,7 @@ void addAula(Aula *aulas, int *contador_aulas, Professor *professores, int conta
         return;
     }
 
-    aulas[*contador_aulas].id = *contador_aulas + 1;
+    aulas[*contador_aulas].id = genIdAula(aulas, *contador_aulas);
     aulas[*contador_aulas].contador_alunos = 0;
     aulas[*contador_aulas].contador_professores = 0;
 
@@ -23,12 +59,11 @@ void addAula(Aula *aulas, int *contador_aulas, Professor *professores, int conta
     printf("Insira o ID do professor: ");
     scanf("%d", &professor_id);
 
-    // Verifica se o ID do professor é válido e incrementa o contador de aulas do professor
     int professor_valido = 0;
     for (int i = 0; i < contador_professor; i++) {
         if (professores[i].id == professor_id) {
             aulas[*contador_aulas].Professor_id = professor_id;
-            professores[i].contador_aulas++; // Incrementa o contador de aulas do professor
+            professores[i].contador_aulas++; 
             professor_valido = 1;
             break;
         }
