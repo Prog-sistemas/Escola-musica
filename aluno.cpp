@@ -11,13 +11,25 @@ void addAluno(Aluno *alunos, int *contador_estudante) {
     alunos[*contador_estudante].id = *contador_estudante + 1; 
     printf("Insira o nome do aluno: ");
     scanf(" %[^\n]", alunos[*contador_estudante].nome);
-    printf("Insira a idade do aluno: ");
-    scanf("%d", &alunos[*contador_estudante].idade);
+
+    // Adicionando validação para a idade
+    int idadeValida = 0;
+    while (!idadeValida) {
+        printf("Insira a idade do aluno: ");
+        scanf("%d", &alunos[*contador_estudante].idade);
+        if (alunos[*contador_estudante].idade >= 0 && alunos[*contador_estudante].idade <= 120) {
+            idadeValida = 1;
+        } else {
+            printf("Idade inválida. Por favor, insira uma idade entre 0 e 120 anos.\n");
+        }
+    }
+
     printf("Insira o instrumento musical do aluno: ");
     scanf(" %[^\n]", alunos[*contador_estudante].instrumento_musical);
     alunos[*contador_estudante].contador_aulas = 0;
     (*contador_estudante)++;
 }
+
 
 void listarAlunos(Aluno *alunos, int contador_estudante) {
     for (int i = 0; i < contador_estudante; i++) {
@@ -42,8 +54,19 @@ void editarAluno(Aluno *alunos, int contador_estudante) {
         if (alunos[i].id == id) {
             printf("Editar nome (atual: %s): ", alunos[i].nome);
             scanf(" %[^\n]", alunos[i].nome);
-            printf("Editar idade (atual: %d): ", alunos[i].idade);
-            scanf("%d", &alunos[i].idade);
+
+            // Adicionando validação para a idade
+            int idadeValida = 0;
+            while (!idadeValida) {
+                printf("Editar idade (atual: %d): ", alunos[i].idade);
+                scanf("%d", &alunos[i].idade);
+                if (alunos[i].idade >= 0 && alunos[i].idade <= 120) {
+                    idadeValida = 1;
+                } else {
+                    printf("Idade inválida. Por favor, insira uma idade entre 0 e 120 anos.\n");
+                }
+            }
+
             printf("Editar instrumento musical (atual: %s): ", alunos[i].instrumento_musical);
             scanf(" %[^\n]", alunos[i].instrumento_musical);
             return;
@@ -51,6 +74,9 @@ void editarAluno(Aluno *alunos, int contador_estudante) {
     }
     printf("Aluno não encontrado.\n");
 }
+
+
+
 
 void excluirAluno(Aluno *alunos, int *contador_estudante, Aula *aulas, int contador_aulas) {
     for (int i = 0; i < *contador_estudante; i++) {
